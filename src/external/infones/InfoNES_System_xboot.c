@@ -271,6 +271,7 @@ int main__(int argc, char **argv)
 	  col.r =  NesPaletteRGB[i][0];
 	  col.g =  NesPaletteRGB[i][1];
 	  col.b =  NesPaletteRGB[i][2];
+
 	  col.a =  0xff;
 
     NesPalette[i] = surface_map_color(obj, &col);
@@ -597,10 +598,14 @@ void InfoNES_LoadFrame(){
   int	x, y;
   BYTE *p,*pl;
   WORD *pw;	
+  struct surface_t * new;
 
   fb->swap(fb);
+  new = surface_scale(obj, 0, NES_DISP_WIDTH * 2, NES_DISP_HEIGHT * 2);
   //surface_blit(screen, 0, obj, &rect, BLEND_MODE_REPLACE);
-  surface_blit(screen, 0, obj, 0, BLEND_MODE_REPLACE);
+  //surface_blit(screen, 0, obj, 0, BLEND_MODE_REPLACE);
+  surface_blit(screen, 0, new, 0, BLEND_MODE_REPLACE);
+  surface_free(new);
   fb->flush(fb);
 
 
