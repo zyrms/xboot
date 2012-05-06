@@ -9,8 +9,8 @@
 /*-------------------------------------------------------------------*/
 /*  Include files                                                    */
 /*-------------------------------------------------------------------*/
-#include "K6502.h"
-#include "K6502_rw.h"
+#include "k6502.h"
+#include "k6502rw.h"
 #include "InfoNES_System.h"
 #include "InfoNES_pAPU.h"
 

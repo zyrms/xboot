@@ -9,8 +9,9 @@
 #include <xboot.h>
 #include <fb/fb.h>
 #include <graphic/color.h>
+#include <input/keyboard/keyboard.h>
 
-#include "InfoNES.h"
+#include "nes.h"
 #include "InfoNES_System.h"
 #include "InfoNES_pAPU.h"
 
@@ -46,9 +47,9 @@ int wavflag;
 int wavdone;
 
 /* Pad state */
-DWORD dwPad1;
-DWORD dwPad2;
-DWORD dwSystem;
+DWORD dwPad1 = 0;
+DWORD dwPad2 = 0;
+DWORD dwSystem = 0;
 
 /*-------------------------------------------------------------------*/
 /*  Function prototypes ( SDL specific )                             */
@@ -103,6 +104,88 @@ BYTE NesPaletteRGB[64][3] = {
 struct fb * fb;
 struct surface_t * obj;
 struct surface_t * screen;
+
+static void keyboard_onkeydown(enum key_code key)
+{
+	switch(key)
+	{
+	case KEY_UP:
+		dwPad1 |= (1<<4);
+		break;
+
+	case KEY_DOWN:
+		dwPad1 |= (1<<5);
+		break;
+
+	case KEY_LEFT:
+		dwPad1 |= (1<<6);
+		break;
+
+	case KEY_RIGHT:
+		dwPad1 |= (1<<7);
+		break;
+
+	case KEY_z:	/* A */
+		dwPad1 |= (1<<0);
+		break;
+
+	case KEY_x:	/* B */
+		dwPad1 |= (1<<1);
+		break;
+
+	case KEY_a:	/* select */
+		dwPad1 |= (1<<2);
+		break;
+
+	case KEY_s:	/* start */
+		dwPad1 |= (1<<3);
+		break;
+
+	default:
+		break;
+	}
+}
+
+static void keyboard_onkeyup(enum key_code key)
+{
+	switch(key)
+	{
+	case KEY_UP:
+		dwPad1 &= ~(1<<4);
+		break;
+
+	case KEY_DOWN:
+		dwPad1 &= ~(1<<5);
+		break;
+
+	case KEY_LEFT:
+		dwPad1 &= ~(1<<6);
+		break;
+
+	case KEY_RIGHT:
+		dwPad1 &= ~(1<<7);
+		break;
+
+	case KEY_z:	/* A */
+		dwPad1 &= ~(1<<0);
+		break;
+
+	case KEY_x:	/* B */
+		dwPad1 &= ~(1<<1);
+		break;
+
+	case KEY_a:	/* select */
+		dwPad1 &= ~(1<<2);
+		break;
+
+	case KEY_s:	/* start */
+		dwPad1 &= ~(1<<3);
+		break;
+
+	default:
+		break;
+	}
+}
 
 /* Application main */
 int main__(int argc, char **argv)
@@ -176,8 +259,11 @@ int main__(int argc, char **argv)
 
   fb = search_framebuffer("fb");
   screen = &fb->info->surface;
-  obj = surface_alloc(WorkFrame, NES_DISP_WIDTH, NES_DISP_HEIGHT, PIXEL_FORMAT_ABGR_8888);
+  obj = surface_alloc(WorkFrame, NES_DISP_WIDTH, NES_DISP_HEIGHT, PIXEL_FORMAT_BGR_565);
   int i;
+
+  install_listener_onkeydown(keyboard_onkeydown);
+  install_listener_onkeyup(keyboard_onkeyup);
 
   for(i=0; i<64; ++i)
   {
@@ -536,7 +622,30 @@ void InfoNES_LoadFrame(){
 /* Get a joypad state */
 void InfoNES_PadState( DWORD *pdwPad1, DWORD *pdwPad2, DWORD *pdwSystem )
 {
-  poll_event();
+	u32_t code;
+
+	if(console_stdin_getcode(&code))
+	{
+		switch(code)
+		{
+		case 0x10:	/* up */
+			break;
+
+		case 0xe:	/* down */
+			break;
+
+		case 0x2:	/* left */
+			break;
+
+		case 0x6:	/* right */
+			break;
+
+		default:
+			break;
+		}
+
+	}
+
   *pdwPad1 = dwPad1;
   *pdwPad2 = dwPad2;
   *pdwSystem = dwSystem;
@@ -733,8 +842,5 @@ void InfoNES_SoundOutput(int samples, BYTE *wave1, BYTE *wave2, BYTE *wave3, BYT
 //    while (!wavdone) SDL_Delay(0);
   }*/
 }
-
-/* Print system message */
-void InfoNES_MessageBox(char *pszMsg, ...){}
 
 /* End of InfoNES_System_SDL.cpp */

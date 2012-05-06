@@ -1,0 +1,64 @@
+#ifndef __K6502_H__
+#define __K6502_H__
+
+#include "nes.h"
+
+/*
+ * 6502 Flags
+ */
+#define FLAG_C			0x01
+#define FLAG_Z			0x02
+#define FLAG_I			0x04
+#define FLAG_D			0x08
+#define FLAG_B			0x10
+#define FLAG_R			0x20
+#define FLAG_V			0x40
+#define FLAG_N			0x80
+
+/*
+ * Stack Address
+ */
+#define BASE_STACK		0x100
+
+/*
+ * Interrupt Vectors
+ */
+#define VECTOR_NMI		0xfffa
+#define VECTOR_RESET	0xfffc
+#define VECTOR_IRQ		0xfffe
+
+/*
+ * NMI Request
+ */
+#define NMI_REQ			do { NMI_State = 0; } while(0)
+
+/*
+ * IRQ Request
+ */
+#define IRQ_REQ			do { IRQ_State = 0; } while(0)
+
+
+/*
+ * The state of the IRQ pin
+ */
+extern BYTE IRQ_State;
+
+/*
+ * The state of the NMI pin
+ */
+extern BYTE NMI_State;
+
+/*
+ * The number of the clocks that it passed
+ */
+extern WORD g_wPassedClocks;
+
+/*
+ * Emulator Operation
+ */
+void K6502_Init(void);
+void K6502_Reset(void);
+void K6502_Set_Int_Wiring(BYTE byNMI_Wiring, BYTE byIRQ_Wiring);
+void K6502_Step(register WORD wClocks);
+
+#endif /* __K6502_H__ */

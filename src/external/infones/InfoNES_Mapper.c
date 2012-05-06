@@ -10,10 +10,10 @@
 /*  Include files                                                    */
 /*-------------------------------------------------------------------*/
 
-#include "InfoNES.h"
+#include "nes.h"
 #include "InfoNES_System.h"
 #include "InfoNES_Mapper.h"
-#include "K6502.h"
+#include "k6502.h"
 
 /*-------------------------------------------------------------------*/
 /*  Mapper resources                                                 */
@@ -166,7 +166,7 @@ struct MapperTable_tag MapperTable[] =
   { 251, Map251_Init },
   { 252, Map252_Init },
   { 255, Map255_Init },*/
-  { -1, NULL }
+  { -1, 0 }
 };
 
 /*-------------------------------------------------------------------*/
