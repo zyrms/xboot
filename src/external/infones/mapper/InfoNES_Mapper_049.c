@@ -18,6 +18,7 @@ BYTE Map49_IRQ_Latch;
 /*-------------------------------------------------------------------*/
 void Map49_Init()
 {
+	int nPage;
   /* Initialize Mapper */
   MapperInit = Map49_Init;
 
@@ -64,7 +65,7 @@ void Map49_Init()
   Map49_Chr6  = 6;
   Map49_Chr7  = 7;
 
-  for ( int nPage = 0; nPage < 8; ++nPage )
+  for (  nPage = 0; nPage < 8; ++nPage )
   {
     PPUBANK[ nPage ] = VROMPAGE( nPage );
   }

@@ -11,6 +11,7 @@ BYTE Map99_Coin;
 /*-------------------------------------------------------------------*/
 void Map99_Init()
 {
+	int nPage;
   /* Initialize Mapper */
   MapperInit = Map99_Init;
 
@@ -65,7 +66,7 @@ void Map99_Init()
   /* Set PPU Banks */
   if ( NesHeader.byVRomSize > 0 )
   {
-    for ( int nPage = 0; nPage < 8; ++nPage )
+    for (  nPage = 0; nPage < 8; ++nPage )
       PPUBANK[ nPage ] = VROMPAGE( nPage );
     InfoNES_SetupChr();
   }

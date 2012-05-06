@@ -15,6 +15,7 @@ BYTE Map33_IRQ_Cnt;
 /*-------------------------------------------------------------------*/
 void Map33_Init()
 {
+	int nPage;
   /* Initialize Mapper */
   MapperInit = Map33_Init;
 
@@ -54,7 +55,7 @@ void Map33_Init()
   /* Set PPU Banks */
   if ( NesHeader.byVRomSize > 0 )
   {
-    for ( int nPage = 0; nPage < 8; ++nPage )
+    for (  nPage = 0; nPage < 8; ++nPage )
     {
       PPUBANK[ nPage ] = VROMPAGE( nPage );
       Map33_Regs[ nPage ] = nPage;
@@ -63,7 +64,7 @@ void Map33_Init()
   } 
   else 
   {
-    for ( int nPage = 0; nPage < 8; ++nPage )
+    for (  nPage = 0; nPage < 8; ++nPage )
     {
       Map33_Regs[ nPage ] = 0;
     }

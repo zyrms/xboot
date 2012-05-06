@@ -17,6 +17,8 @@ BYTE	Map249_IRQ_Request;
 /*-------------------------------------------------------------------*/
 void Map249_Init()
 {
+	int i;
+	int nPage;
   /* Initialize Mapper */
   MapperInit = Map249_Init;
 
@@ -48,7 +50,7 @@ void Map249_Init()
   SRAMBANK = SRAM;
 
   /* Set Registers */
-  for( int i = 0; i < 8; i++ ) {
+  for(  i = 0; i < 8; i++ ) {
     Map249_Reg[i] = 0x00;
   }
 
@@ -62,7 +64,7 @@ void Map249_Init()
 
   /* Set PPU Banks */
   if ( NesHeader.byVRomSize > 0 ) {
-    for ( int nPage = 0; nPage < 8; ++nPage )
+    for (  nPage = 0; nPage < 8; ++nPage )
       PPUBANK[ nPage ] = VROMPAGE( nPage );
     InfoNES_SetupChr();
   }

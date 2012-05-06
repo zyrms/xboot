@@ -22,6 +22,7 @@ BYTE Map44_IRQ_Latch;
 /*-------------------------------------------------------------------*/
 void Map44_Init()
 {
+	int nPage;
   /* Initialize Mapper */
   MapperInit = Map44_Init;
 
@@ -53,7 +54,7 @@ void Map44_Init()
   SRAMBANK = SRAM;
 
   /* Initialize State Registers */
-  for ( int nPage = 0; nPage < 8; nPage++ )
+  for (  nPage = 0; nPage < 8; nPage++ )
   {
     Map44_Regs[ nPage ] = 0x00;
   }

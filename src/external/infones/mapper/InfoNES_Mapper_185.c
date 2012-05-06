@@ -11,6 +11,7 @@ BYTE Map185_Dummy_Chr_Rom[ 0x400 ];
 /*-------------------------------------------------------------------*/
 void Map185_Init()
 {
+	int nPage;
   /* Initialize Mapper */
   MapperInit = Map185_Init;
 
@@ -48,7 +49,7 @@ void Map185_Init()
   ROMBANK3 = ROMPAGE( 3 );
 
   /* Initialize Dummy VROM */
-  for ( int nPage = 0; nPage < 0x400; nPage++ )
+  for (  nPage = 0; nPage < 0x400; nPage++ )
   {
     Map185_Dummy_Chr_Rom[ nPage ] = 0xff;
   }

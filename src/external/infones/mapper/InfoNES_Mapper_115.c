@@ -22,6 +22,7 @@ BYTE	Map115_ExChrSwitch;
 /*-------------------------------------------------------------------*/
 void Map115_Init()
 {
+	int i;
   /* Initialize Mapper */
   MapperInit = Map115_Init;
 
@@ -53,7 +54,7 @@ void Map115_Init()
   SRAMBANK = SRAM;
 
   /* Initialize Registers */
-  for( int i = 0; i < 8; i++ ) {
+  for(  i = 0; i < 8; i++ ) {
     Map115_Reg[i] = 0x00;
   }
 

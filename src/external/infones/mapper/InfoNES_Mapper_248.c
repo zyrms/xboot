@@ -19,6 +19,7 @@ BYTE	Map248_IRQ_Request;
 /*-------------------------------------------------------------------*/
 void Map248_Init()
 {
+	int i;
   /* Initialize Mapper */
   MapperInit = Map248_Init;
 
@@ -50,7 +51,7 @@ void Map248_Init()
   SRAMBANK = SRAM;
 
   /* Set Registers */
-  for( int i = 0; i < 8; i++ ) {
+  for(  i = 0; i < 8; i++ ) {
     Map248_Reg[i] = 0x00;
   }
 

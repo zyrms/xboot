@@ -11,6 +11,7 @@ BYTE    Map134_Cmd, Map134_Prg, Map134_Chr;
 /*-------------------------------------------------------------------*/
 void Map134_Init()
 {
+	int nPage;
   /* Initialize Mapper */
   MapperInit = Map134_Init;
 
@@ -49,7 +50,7 @@ void Map134_Init()
 
   /* Set PPU Banks */
   if ( NesHeader.byVRomSize > 0 ) {
-    for ( int nPage = 0; nPage < 8; ++nPage )
+    for (  nPage = 0; nPage < 8; ++nPage )
       PPUBANK[ nPage ] = VROMPAGE( nPage );
     InfoNES_SetupChr();
   }

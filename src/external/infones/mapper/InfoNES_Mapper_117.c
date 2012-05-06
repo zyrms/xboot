@@ -13,6 +13,7 @@ BYTE Map117_IRQ_Enable2;
 /*-------------------------------------------------------------------*/
 void Map117_Init()
 {
+	int nPage;
   /* Initialize Mapper */
   MapperInit = Map117_Init;
 
@@ -52,7 +53,7 @@ void Map117_Init()
   /* Set PPU Banks */
   if ( NesHeader.byVRomSize > 0 )
   {
-    for ( int nPage = 0; nPage < 8; ++nPage )
+    for (  nPage = 0; nPage < 8; ++nPage )
       PPUBANK[ nPage ] = VROMPAGE( nPage );
     InfoNES_SetupChr();
   }

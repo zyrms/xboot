@@ -13,6 +13,7 @@ BYTE Map182_IRQ_Cnt;
 /*-------------------------------------------------------------------*/
 void Map182_Init()
 {
+	int nPage;
   /* Initialize Mapper */
   MapperInit = Map182_Init;
 
@@ -52,7 +53,7 @@ void Map182_Init()
   /* Set PPU Banks */
   if ( NesHeader.byVRomSize > 0 )
   {
-    for ( int nPage = 0; nPage < 8; ++nPage )
+    for (  nPage = 0; nPage < 8; ++nPage )
     {
       PPUBANK[ nPage ] = VROMPAGE( nPage );
     }

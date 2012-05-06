@@ -18,6 +18,7 @@ BYTE	Map119_IRQ_Latch;
 /*-------------------------------------------------------------------*/
 void Map119_Init()
 {
+	int i;
   /* Initialize Mapper */
   MapperInit = Map119_Init;
 
@@ -49,7 +50,7 @@ void Map119_Init()
   SRAMBANK = SRAM;
 
   /* Set Registers */ 
-  for( int i = 0; i < 8; i++ ) {
+  for(  i = 0; i < 8; i++ ) {
     Map119_Reg[i] = 0x00;
   }
 

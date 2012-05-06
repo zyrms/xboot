@@ -11,6 +11,7 @@ BYTE  Map88_Regs[ 1 ];
 /*-------------------------------------------------------------------*/
 void Map88_Init()
 {
+	int nPage;
   /* Initialize Mapper */
   MapperInit = Map88_Init;
 
@@ -50,7 +51,7 @@ void Map88_Init()
   /* Set PPU Banks */
   if ( NesHeader.byVRomSize > 0 )
   {
-    for ( int nPage = 0; nPage < 8; ++nPage )
+    for (  nPage = 0; nPage < 8; ++nPage )
       PPUBANK[ nPage ] = VROMPAGE( nPage );
     InfoNES_SetupChr();
   }

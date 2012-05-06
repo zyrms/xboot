@@ -14,6 +14,8 @@ BYTE	Map191_Highbank;
 /*-------------------------------------------------------------------*/
 void Map191_Init()
 {
+	int i;
+
   /* Initialize Mapper */
   MapperInit = Map191_Init;
 
@@ -45,7 +47,7 @@ void Map191_Init()
   SRAMBANK = SRAM;
 
   /* Initialize Registers */
-  for( int i = 0; i < 8; i++ ) {
+  for(  i = 0; i < 8; i++ ) {
     Map191_Reg[i] = 0x00;
   }
 

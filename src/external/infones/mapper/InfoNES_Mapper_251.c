@@ -109,8 +109,9 @@ void Map251_Set_Banks()
 {
   int	nChr[6];
   int	nPrg[4];
+  int i;
 
-  for( int i = 0; i < 6; i++ ) {
+  for(  i = 0; i < 6; i++ ) {
     nChr[i] = (Map251_Reg[i]|(Map251_Breg[1]<<4)) & ((Map251_Breg[2]<<4)|0x0F);
   }
 

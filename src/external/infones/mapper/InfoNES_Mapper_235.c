@@ -9,6 +9,7 @@
 /*-------------------------------------------------------------------*/
 void Map235_Init()
 {
+	int i;
   /* Initialize Mapper */
   MapperInit = Map235_Init;
 
@@ -40,7 +41,7 @@ void Map235_Init()
   SRAMBANK = SRAM;
 
   /* Set Registers */
-  for( int i = 0; i < 0x2000; i++ ) {
+  for(  i = 0; i < 0x2000; i++ ) {
     DRAM[i] = 0xFF;
   }
 

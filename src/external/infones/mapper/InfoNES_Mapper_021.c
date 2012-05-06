@@ -14,6 +14,8 @@ BYTE Map21_IRQ_Latch;
 /*-------------------------------------------------------------------*/
 void Map21_Init()
 {
+	int nPage;
+
   /* Initialize Mapper */
   MapperInit = Map21_Init;
 
@@ -51,7 +53,7 @@ void Map21_Init()
   ROMBANK3 = ROMLASTPAGE( 0 );
 
   /* Initialize State Registers */
-  for ( int nPage = 0; nPage < 8; nPage++ )
+  for ( nPage = 0; nPage < 8; nPage++ )
   {
     Map21_Regs[ nPage ] = nPage;
   }

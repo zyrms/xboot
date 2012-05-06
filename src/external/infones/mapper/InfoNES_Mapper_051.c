@@ -11,6 +11,7 @@ int     Map51_Mode, Map51_Bank;
 /*-------------------------------------------------------------------*/
 void Map51_Init()
 {
+	int nPage;
   /* Initialize Mapper */
   MapperInit = Map51_Init;
 
@@ -49,7 +50,7 @@ void Map51_Init()
   Map51_Set_CPU_Banks();
 
   /* Set PPU Banks */
-  for ( int nPage = 0; nPage < 8; ++nPage )
+  for (  nPage = 0; nPage < 8; ++nPage )
     PPUBANK[ nPage ] = CRAMPAGE( nPage );
   InfoNES_SetupChr();
 

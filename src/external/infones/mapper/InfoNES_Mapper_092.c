@@ -9,6 +9,7 @@
 /*-------------------------------------------------------------------*/
 void Map92_Init()
 {
+	int nPage;
   /* Initialize Mapper */
   MapperInit = Map92_Init;
 
@@ -48,7 +49,7 @@ void Map92_Init()
   /* Set PPU Banks */
   if ( NesHeader.byVRomSize > 0 )
   {
-    for ( int nPage = 0; nPage < 8; ++nPage )
+    for (  nPage = 0; nPage < 8; ++nPage )
       PPUBANK[ nPage ] = VROMPAGE( nPage );
     InfoNES_SetupChr();
   }

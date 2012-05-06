@@ -22,6 +22,7 @@ BYTE Map47_IRQ_Latch;
 /*-------------------------------------------------------------------*/
 void Map47_Init()
 {
+	int nPage;
   /* Initialize Mapper */
   MapperInit = Map47_Init;
 
@@ -53,7 +54,7 @@ void Map47_Init()
   SRAMBANK = SRAM;
 
   /* Initialize State Registers */
-  for ( int nPage = 0; nPage < 8; nPage++ )
+  for (  nPage = 0; nPage < 8; nPage++ )
   {
     Map47_Regs[ nPage ] = 0x00;
   }

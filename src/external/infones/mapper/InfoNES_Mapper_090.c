@@ -29,6 +29,9 @@ BYTE Map90_IRQ_Latch;
 /*-------------------------------------------------------------------*/
 void Map90_Init()
 {
+	int nPage;
+	BYTE byPage;
+
   /* Initialize Mapper */
   MapperInit = Map90_Init;
 
@@ -68,7 +71,7 @@ void Map90_Init()
   /* Set PPU Banks */
   if ( NesHeader.byVRomSize > 0 )
   {
-    for ( int nPage = 0; nPage < 8; ++nPage )
+    for (  nPage = 0; nPage < 8; ++nPage )
       PPUBANK[ nPage ] = VROMPAGE( nPage );
     InfoNES_SetupChr();
   }
@@ -78,7 +81,7 @@ void Map90_Init()
   Map90_IRQ_Latch = 0;
   Map90_IRQ_Enable = 0;
 
-  for ( BYTE byPage = 0; byPage < 4; byPage++ )
+  for (  byPage = 0; byPage < 4; byPage++ )
   {
     Map90_Prg_Reg[ byPage ] = ( NesHeader.byRomSize << 1 ) - 4 + byPage;
     Map90_Nam_Low_Reg[ byPage ] = 0;

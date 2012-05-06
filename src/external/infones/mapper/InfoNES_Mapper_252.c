@@ -16,6 +16,8 @@ int	Map252_IRQ_Clock;
 /*-------------------------------------------------------------------*/
 void Map252_Init()
 {
+	int i;
+	int nPage;
   /* Initialize Mapper */
   MapperInit = Map252_Init;
 
@@ -47,7 +49,7 @@ void Map252_Init()
   SRAMBANK = SRAM;
 
   /* Set Registers */
-  for( int i = 0; i < 9; i++ ) {
+  for(  i = 0; i < 9; i++ ) {
     Map252_Reg[i] = i;
   }
 
@@ -65,7 +67,7 @@ void Map252_Init()
 
   /* Set PPU Banks */
   if ( NesHeader.byVRomSize > 0 ) {
-    for ( int nPage = 0; nPage < 8; ++nPage )
+    for (  nPage = 0; nPage < 8; ++nPage )
       PPUBANK[ nPage ] = VROMPAGE( nPage );
     InfoNES_SetupChr();
   }

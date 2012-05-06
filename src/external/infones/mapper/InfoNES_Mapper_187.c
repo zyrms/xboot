@@ -23,6 +23,8 @@ BYTE	Map187_LastWrite;
 /*-------------------------------------------------------------------*/
 void Map187_Init()
 {
+	int i;
+
   /* Initialize Mapper */
   MapperInit = Map187_Init;
 
@@ -54,7 +56,7 @@ void Map187_Init()
   SRAMBANK = SRAM;
 
   /* Set Registers */
-  for( int i = 0; i < 8; i++ ) {
+  for(  i = 0; i < 8; i++ ) {
     Map187_Chr[i] = 0x00;
     Map187_Bank[i] = 0x00;
   }

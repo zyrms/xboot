@@ -44,7 +44,7 @@ struct MapperTable_tag MapperTable[] =
   {  15, Map15_Init  },
   {  16, Map16_Init  },
   {  17, Map17_Init  },
-/*  {  18, Map18_Init  },
+  {  18, Map18_Init  },
   {  19, Map19_Init  },
   {  21, Map21_Init  },
   {  22, Map22_Init  },
@@ -165,7 +165,7 @@ struct MapperTable_tag MapperTable[] =
   { 249, Map249_Init },
   { 251, Map251_Init },
   { 252, Map252_Init },
-  { 255, Map255_Init },*/
+  { 255, Map255_Init },
   { -1, 0 }
 };
 
@@ -189,7 +189,7 @@ struct MapperTable_tag MapperTable[] =
 #include "mapper/InfoNES_Mapper_015.c"
 #include "mapper/InfoNES_Mapper_016.c"
 #include "mapper/InfoNES_Mapper_017.c"
-/*#include "mapper/InfoNES_Mapper_018.c"
+#include "mapper/InfoNES_Mapper_018.c"
 #include "mapper/InfoNES_Mapper_019.c"
 #include "mapper/InfoNES_Mapper_021.c"
 #include "mapper/InfoNES_Mapper_022.c"
@@ -311,5 +311,5 @@ struct MapperTable_tag MapperTable[] =
 #include "mapper/InfoNES_Mapper_251.c"
 #include "mapper/InfoNES_Mapper_252.c"
 #include "mapper/InfoNES_Mapper_255.c"
-*/
+
 /* End of InfoNES_Mapper.c */

@@ -13,6 +13,8 @@ int	Map183_IRQ_Counter;
 /*-------------------------------------------------------------------*/
 void Map183_Init()
 {
+	int nPage;
+	int i;
   /* Initialize Mapper */
   MapperInit = Map183_Init;
 
@@ -51,13 +53,13 @@ void Map183_Init()
 
   /* Set PPU Banks */
   if ( NesHeader.byVRomSize > 0 ) {
-    for ( int nPage = 0; nPage < 8; ++nPage )
+    for (  nPage = 0; nPage < 8; ++nPage )
       PPUBANK[ nPage ] = VROMPAGE( nPage );
     InfoNES_SetupChr();
   }
 
   /* Initialize Registers */
-  for( int i = 0; i < 8; i++ ) {
+  for(  i = 0; i < 8; i++ ) {
     Map183_Reg[i] = i;
   }
   Map183_IRQ_Enable = 0;
@@ -72,6 +74,8 @@ void Map183_Init()
 /*-------------------------------------------------------------------*/
 void Map183_Write( WORD wAddr, BYTE byData )
 {
+	int i;
+
   switch( wAddr ) {
   case	0x8800:
     ROMBANK0 = ROMPAGE( byData % (NesHeader.byRomSize << 1) );
@@ -169,7 +173,7 @@ void Map183_Write( WORD wAddr, BYTE byData )
     
   case	0x9008:
     if( byData == 1 ) {
-      for( int i = 0; i < 8; i++ ) {
+      for(  i = 0; i < 8; i++ ) {
 	Map183_Reg[i] = i;
       }
       /* Set ROM Banks */

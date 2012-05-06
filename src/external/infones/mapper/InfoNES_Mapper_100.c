@@ -18,6 +18,8 @@ BYTE	Map100_IRQ_Latch;
 /*-------------------------------------------------------------------*/
 void Map100_Init()
 {
+	int i;
+
   /* Initialize Mapper */
   MapperInit = Map100_Init;
 
@@ -75,7 +77,7 @@ void Map100_Init()
   Map100_IRQ_Enable = 0;
   Map100_IRQ_Cnt = 0;
   Map100_IRQ_Latch = 0;
-  for( int i = 0; i < 8; i++ ) { Map100_Reg[ i ] = 0x00; }
+  for(  i = 0; i < 8; i++ ) { Map100_Reg[ i ] = 0x00; }
 
   /* Set up wiring of the interrupt pin */
   K6502_Set_Int_Wiring( 1, 1 ); 

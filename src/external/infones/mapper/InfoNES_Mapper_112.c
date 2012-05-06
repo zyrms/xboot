@@ -20,6 +20,8 @@ BYTE  Map112_IRQ_Latch;   /* IRQ scanline counter latch */
 /*-------------------------------------------------------------------*/
 void Map112_Init()
 {
+	int i;
+
   /* Initialize Mapper */
   MapperInit = Map112_Init;
 
@@ -51,7 +53,7 @@ void Map112_Init()
   SRAMBANK = SRAM;
 
   /* clear registers FIRST!!! */
-  for(int i = 0; i < 8; i++) 
+  for( i = 0; i < 8; i++)
   {
     Map112_Regs[i] = 0x00;
   }

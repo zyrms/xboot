@@ -14,6 +14,8 @@ WORD Map18_IRQ_Cnt;
 /*-------------------------------------------------------------------*/
 void Map18_Init()
 {
+	int i;
+
   /* Initialize Mapper */
   MapperInit = Map18_Init;
 
@@ -51,7 +53,7 @@ void Map18_Init()
   ROMBANK3 = ROMLASTPAGE( 0 );
 
   /* Initialize Regs */
-  for ( int i = 0; i < sizeof( Map18_Regs ); i++ )
+  for ( i = 0; i < sizeof( Map18_Regs ); i++ )
   {
     Map18_Regs[ i ] = 0;
   }

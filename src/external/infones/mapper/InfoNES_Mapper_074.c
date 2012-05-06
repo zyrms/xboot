@@ -25,6 +25,7 @@ BYTE Map74_IRQ_Present_Vbl;
 /*-------------------------------------------------------------------*/
 void Map74_Init()
 {
+	int nPage;
   /* Initialize Mapper */
   MapperInit = Map74_Init;
 
@@ -56,7 +57,7 @@ void Map74_Init()
   SRAMBANK = SRAM;
 
   /* Initialize State Registers */
-  for ( int nPage = 0; nPage < 8; nPage++ )
+  for (  nPage = 0; nPage < 8; nPage++ )
   {
     Map74_Regs[ nPage ] = 0x00;
   }

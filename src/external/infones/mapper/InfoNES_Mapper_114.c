@@ -21,6 +21,7 @@ BYTE Map114_IRQ_Latch;
 /*-------------------------------------------------------------------*/
 void Map114_Init()
 {
+	int nPage;
   /* Initialize Mapper */
   MapperInit = Map114_Init;
 
@@ -52,7 +53,7 @@ void Map114_Init()
   SRAMBANK = SRAM;
 
   /* Initialize State Registers */
-  for ( int nPage = 0; nPage < 8; nPage++)
+  for (  nPage = 0; nPage < 8; nPage++)
   {
     Map114_Regs[ nPage ] = 0x00;
   }
@@ -91,10 +92,11 @@ void Map114_Init()
 /*-------------------------------------------------------------------*/
 void Map114_Sram( WORD wAddr, BYTE byData )
 {
+	int nPage;
   if ( ( wAddr == 0x6000 ) && ( byData == 0x00 ) )
   {
     /* Initialize State Registers */
-    for ( int nPage = 0; nPage < 8; nPage++)
+    for (  nPage = 0; nPage < 8; nPage++)
     {
       Map114_Regs[ nPage ] = 0x00;
     }

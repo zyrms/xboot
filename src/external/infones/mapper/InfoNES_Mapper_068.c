@@ -11,6 +11,7 @@ BYTE Map68_Regs[4];
 /*-------------------------------------------------------------------*/
 void Map68_Init()
 {
+	int i;
   /* Initialize Mapper */
   MapperInit = Map68_Init;
 
@@ -48,7 +49,7 @@ void Map68_Init()
   ROMBANK3 = ROMLASTPAGE( 0 );
 
   /* Initialize state flag */
-  for ( int i = 0; i < 4; i++ )
+  for (  i = 0; i < 4; i++ )
     Map68_Regs[ i ] = 0x00;
 
   /* Set up wiring of the interrupt pin */

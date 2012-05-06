@@ -18,6 +18,7 @@ BYTE Map45_IRQ_Latch;
 /*-------------------------------------------------------------------*/
 void Map45_Init()
 {
+	int nPage;
   /* Initialize Mapper */
   MapperInit = Map45_Init;
 
@@ -69,7 +70,7 @@ void Map45_Init()
   Map45_Chr6 = 6;  Map45_C[6] = Map45_Chr6;
   Map45_Chr7 = 7;  Map45_C[7] = Map45_Chr7;
 
-  for ( int nPage = 0; nPage < 8; ++nPage ) {
+  for (  nPage = 0; nPage < 8; ++nPage ) {
     PPUBANK[ nPage ] = VROMPAGE( nPage );
   }
   InfoNES_SetupChr();
@@ -299,6 +300,7 @@ void Map45_Set_CPU_Bank7(BYTE byData)
 /*-------------------------------------------------------------------*/
 void Map45_Set_PPU_Banks()
 {
+	BYTE i;
 	BYTE table[16] =
 	    {
 	        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
@@ -312,7 +314,7 @@ void Map45_Set_PPU_Banks()
 	Map45_C[5] = Map45_Chr5;
 	Map45_C[6] = Map45_Chr6;
 	Map45_C[7] = Map45_Chr7;
-	for(BYTE i = 0; i < 8; i++)
+	for( i = 0; i < 8; i++)
 	{
 		Map45_C[i] &= table[Map45_Regs[2] & 0x0F];
 		Map45_C[i] |= Map45_Regs[0] & 0xff;
