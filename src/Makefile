@@ -137,6 +137,9 @@ SRCDIRS		+=	external/lua-5.2.0
 INCDIRS		+= 	-I external/zlib-1.2.6
 SRCDIRS		+=	external/zlib-1.2.6
 
+INCDIRS		+= 	-I external/infones
+SRCDIRS		+=	external/infones
+
 #
 # You shouldn't need to change anything below this point.
 #

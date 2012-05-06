@@ -946,7 +946,10 @@ void game(void)
 
 static int test(int argc, char ** argv)
 {
-	game();
+//	game();
+	extern int main__(int argc, char **argv);
+	main__(argc, argv);
+
 	return 0;
 }
 
