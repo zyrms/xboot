@@ -137,6 +137,14 @@ SRCDIRS		+=	external/lua-5.2.0
 INCDIRS		+= 	-I external/zlib-1.2.6
 SRCDIRS		+=	external/zlib-1.2.6
 
+INCDIRS		+= 	-I external/chipmunk-6.0.3 \
+				-I external/chipmunk-6.0.3/include/chipmunk \
+				-I external/chipmunk-6.0.3/include/chipmunk/constraints \
+				-I external/chipmunk-6.0.3/src
+SRCDIRS		+=	external/chipmunk-6.0.3 \
+			 	external/chipmunk-6.0.3/src \
+			 	external/chipmunk-6.0.3/src/constraints
+
 #
 # You shouldn't need to change anything below this point.
 #

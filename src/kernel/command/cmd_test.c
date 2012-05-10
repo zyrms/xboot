@@ -944,9 +944,120 @@ void game(void)
     surface_free(obj);
 }
 
+#include "chipmunk.h"
+
 static int test(int argc, char ** argv)
 {
-	game();
+	//game();
+
+	struct fb * fb;
+	struct surface_t * screen;
+	struct surface_t * obj;
+	u32_t c;
+	struct rect_t rect;
+
+	fb = search_framebuffer("fb");
+	screen = &fb->info->surface;
+	c = surface_map_color(screen, get_color_by_name("black"));
+	obj = surface_alloc_from_gimage(&obj_image);
+
+	cpFloat time;
+
+	  // 以下的“批注”是译者自己加的，并不是原文翻译，不对的地方请指正
+
+	  // cpVect is a 2D vector and cpv() is a shortcut for initializing them.
+	  // 批注：创建一个向量，用来表示重力。
+	  cpVect gravity = cpv(0, -100);
+
+	  // 批注： 第一步：创建一个space，space可以理解为所有刚体的运动空间
+	  // Create an empty space.
+	  cpSpace *space = cpSpaceNew();
+	  cpSpaceSetGravity(space, gravity);
+
+	  // 批注： 第二步：创建一个斜坡，因为这个斜坡的属性很少，也不需要移动，就应该使用static-shape,这个shape其实就是一条线。
+	  // Add a static line segment shape for the ground.
+	  // 翻译：新增一个线段(line segment)shape.
+	  // We'll make it slightly tilted so the ball will roll off.
+	  // 翻译：当然，我们需要一条稍微有点倾斜的线段，才能让这个球滚起来。
+	  // We attach it to space->staticBody to tell Chipmunk it shouldn't be movable.
+	  // 翻译：我们把这条线段attach到space里的staticBody里，这样的话，chipmunk就不会让这个物体动了。
+	  cpShape *ground = cpSegmentShapeNew(space->staticBody, cpv(-20, 5), cpv(20, -5), 0);
+	  cpShapeSetFriction(ground, 1);
+	  cpSpaceAddShape(space, ground);
+	  // 批注：到这里，我们的斜坡就创建好了.
+
+	  // 批注：开始创建球了。
+	  // Now let's make a ball that falls onto the line and rolls off.
+	  // 翻译：现在，我们来创建一个球，然后让他掉到我们刚才创建的那个线段上，然后从上面滚下来。
+	  // First we need to make a cpBody to hold the physical properties of the object.
+	  // 翻译：首先，需要一个刚体来hold这个球的物理属性。
+	  // These include the mass, position, velocity, angle, etc. of the object.
+	  // 翻译：(质量啦，半径啦，高中物理课学的那些玩意。)
+	  // Then we attach collision shapes to the cpBody to give it a size and shape.
+	  // 翻译：然后，我们attach碰撞shapes到刚才的那个刚体上。这样，这个刚体就是有大小和形状的了。
+
+	  cpFloat radius = 5;
+	  cpFloat mass = 1;
+
+	  // 批注：设置球的一些属性。
+	  // The moment of inertia is like mass for rotation
+	  // 翻译：惯性的力矩...我翻译不来
+	  // Use the cpMomentFor*() functions to help you approximate it.
+	  // 翻译：用cpMoentFor这类的函数来计算一个近似的惯性矩。
+	  cpFloat moment = cpMomentForCircle(mass, 0, radius, cpvzero);
+
+	  // 批注：创建这个球的刚体。一般来说，一个刚体应该对应一个Actor/Sprite.
+	  // The cpSpaceAdd*() functions return the thing that you are adding.
+	  // 翻译：cpSpaceAdd返回你正在add的对象。
+	  // It's convenient to create and add an object in one line.
+	  // 翻译：创建并添加一个object只需要一行代码，是不是很方便？
+	  cpBody *ballBody = cpSpaceAddBody(space, cpBodyNew(mass, moment));
+	  cpBodySetPos(ballBody, cpv(0, 15));
+
+	  // 批注：最后给这个球加上碰撞框。
+	  // Now we create the collision shape for the ball.
+	  // 翻译：现在我们为这个球创建一个碰撞框（collision shape）
+	  // You can create multiple collision shapes that point to the same body.
+	  // 翻译：你可以为一个刚体(body)创建多个碰撞框。
+	  // They will all be attached to the body and move around to follow it.
+	  // 翻译：他们都会被附在你这个刚体上，刚体走到哪里，碰撞框就跟到哪里。
+	  cpShape *ballShape = cpSpaceAddShape(space, cpCircleShapeNew(ballBody, radius, cpvzero));
+	  cpShapeSetFriction(ballShape, 0.7);
+
+	  // 批注：准备工作完成了，现在开始模拟了。
+	  // Now that it's all set up, we simulate all the objects in the space by
+	  // 翻译：现在所有的准备工作都做好了，我们通过往前步进时间来模拟物体的运动
+	  // stepping forward through time in small increments called steps.
+	  // It is *highly* recommended to use a fixed size time step.
+	  cpFloat timeStep = 1.0/60.0;
+	  for(time = 0; time < 5; time += timeStep){
+	    cpVect pos = cpBodyGetPos(ballBody);
+	    cpVect vel = cpBodyGetVel(ballBody);
+/*	    printk(
+	      "Time is %5.2f. ballBody is at (%5.2f, %5.2f). It's velocity is (%5.2f, %5.2f)\n",
+	      time, pos.x, pos.y, vel.x, vel.y	    );
+	      */
+
+		fb->swap(fb);
+		surface_fill(screen, &screen->clip, c, BLEND_MODE_REPLACE);
+
+		rect.x = 400 + pos.x * 10;
+		rect.y = 200 + pos.y * 10;
+		rect.w = 100;
+		rect.h = 100;
+
+		surface_blit(screen, &rect, obj, 0, BLEND_MODE_ALPHA);
+		fb->flush(fb);
+
+	    cpSpaceStep(space, timeStep);
+	  }
+
+	  // Clean up our objects and exit!
+	  cpShapeFree(ballShape);
+	  cpBodyFree(ballBody);
+	  cpShapeFree(ground);
+	  cpSpaceFree(space);
+
 	return 0;
 }
 
