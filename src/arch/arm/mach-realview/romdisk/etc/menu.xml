@@ -5,7 +5,15 @@
 		<command>exit --shell</command>
 	</item>
 	<item>
-		<title>Classic Video Game Tetris</title>
-		<command>tetris</command>
+		<title>FC EMU -- 90TANK</title>
+		<command>test /romdisk/90tank.nes</command>
+	</item>
+	<item>
+		<title>FC EMU -- MARIO</title>
+		<command>test /romdisk/mario.nes</command>
+	</item>
+	<item>
+		<title>FC EMU -- WAJINZI</title>
+		<command>test /romdisk/wajinzi.nes</command>
 	</item>
 </menu>

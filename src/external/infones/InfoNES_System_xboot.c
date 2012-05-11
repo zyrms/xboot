@@ -109,35 +109,35 @@ static void keyboard_onkeydown(enum key_code key)
 {
 	switch(key)
 	{
-	case KEY_UP:
+	case KEY_w:
 		dwPad1 |= (1<<4);
 		break;
 
-	case KEY_DOWN:
+	case KEY_s:
 		dwPad1 |= (1<<5);
 		break;
 
-	case KEY_LEFT:
+	case KEY_a:
 		dwPad1 |= (1<<6);
 		break;
 
-	case KEY_RIGHT:
+	case KEY_d:
 		dwPad1 |= (1<<7);
 		break;
 
-	case KEY_z:	/* A */
+	case KEY_k:	/* A */
 		dwPad1 |= (1<<0);
 		break;
 
-	case KEY_x:	/* B */
+	case KEY_j:	/* B */
 		dwPad1 |= (1<<1);
 		break;
 
-	case KEY_a:	/* select */
+	case KEY_SPACE:	/* select */
 		dwPad1 |= (1<<2);
 		break;
 
-	case KEY_s:	/* start */
+	case KEY_ENTER:	/* start */
 		dwPad1 |= (1<<3);
 		break;
 
@@ -150,35 +150,35 @@ static void keyboard_onkeyup(enum key_code key)
 {
 	switch(key)
 	{
-	case KEY_UP:
+	case KEY_w:
 		dwPad1 &= ~(1<<4);
 		break;
 
-	case KEY_DOWN:
+	case KEY_s:
 		dwPad1 &= ~(1<<5);
 		break;
 
-	case KEY_LEFT:
+	case KEY_a:
 		dwPad1 &= ~(1<<6);
 		break;
 
-	case KEY_RIGHT:
+	case KEY_d:
 		dwPad1 &= ~(1<<7);
 		break;
 
-	case KEY_z:	/* A */
+	case KEY_k:	/* A */
 		dwPad1 &= ~(1<<0);
 		break;
 
-	case KEY_x:	/* B */
+	case KEY_j:	/* B */
 		dwPad1 &= ~(1<<1);
 		break;
 
-	case KEY_a:	/* select */
+	case KEY_SPACE:	/* select */
 		dwPad1 &= ~(1<<2);
 		break;
 
-	case KEY_s:	/* start */
+	case KEY_ENTER:	/* start */
 		dwPad1 &= ~(1<<3);
 		break;
 
@@ -601,6 +601,7 @@ void InfoNES_LoadFrame(){
   struct surface_t * new;
 
   fb->swap(fb);
+  surface_fill(screen, 0, 0, BLEND_MODE_REPLACE);
   new = surface_scale(obj, 0, NES_DISP_WIDTH * 2, NES_DISP_HEIGHT * 2);
   //surface_blit(screen, 0, obj, &rect, BLEND_MODE_REPLACE);
   //surface_blit(screen, 0, obj, 0, BLEND_MODE_REPLACE);
