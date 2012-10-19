@@ -59,7 +59,7 @@ sinclude arch/$(ARCH)/$(MACH)/xboot.mk
 #
 # Modify default variables.
 #
-NAMESPACES	+=	-D__ARCH__=\"$(ARCH)\" -D__MACH__=\"$(MACH)\"
+NAMESPACES	+=	-D__ARCH__=\"$(ARCH)\" -D__MACH__=\"$(MACH)\" -DHAVE_CONFIG_H
 ASFLAGS		+= 	$(NAMESPACES)
 CFLAGS		+=	$(NAMESPACES)
 CXXFLAGS	+=	$(NAMESPACES)
@@ -139,6 +139,9 @@ SRCDIRS		+=	external/lua-5.2.0
 
 INCDIRS		+= 	external/zlib-1.2.6
 SRCDIRS		+=	external/zlib-1.2.6
+
+INCDIRS		+= 	external/qrencode-3.4.1
+SRCDIRS		+=	external/qrencode-3.4.1
 
 #
 # You shouldn't need to change anything below this point.
