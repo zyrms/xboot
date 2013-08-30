@@ -40,6 +40,7 @@
 
 static int test(int argc, char ** argv)
 {
+	tiny_membench_main();
 	return 0;
 }
 
