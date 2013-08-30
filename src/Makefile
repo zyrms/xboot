@@ -6,7 +6,7 @@
 #
 # You must pass TARGET and CROSS variable.
 #
-TARGET		?= arm32-realview
+TARGET		?= arm32-x210ii
 CROSS		?= arm-none-eabi-
 
 #
@@ -189,6 +189,9 @@ INCDIRS		+=	external/chipmunk-6.1.5/include/chipmunk \
 				external/chipmunk-6.1.5/include/chipmunk/constraints
 SRCDIRS		+=	external/chipmunk-6.1.5/src \
 			 	external/chipmunk-6.1.5/src/constraints
+
+INCDIRS		+= 	external/tinymembench
+SRCDIRS		+=	external/tinymembench
 
 #
 # You shouldn't need to change anything below this point.
