@@ -29,6 +29,8 @@
  */
 int xboot_main(int argc, char * argv[])
 {
+	CoStartMmuAndCache();
+
 	/* Alloc default runtime */
 	runtime_alloc_save(0);
 

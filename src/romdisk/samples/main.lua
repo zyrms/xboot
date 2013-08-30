@@ -71,6 +71,10 @@ local cr1 = buildin_cairo.create(cs1)
 local cr2 = buildin_cairo.create(cs2)
 local index = false;
 
+timer:new(5, 0, function(t, e)
+	sm:changeScene(nextScene(), 1, scene_manager.moveFromLeft, easing.outBounce) 
+end)
+
 timer:new(1 / 60, 0, function(t, e)
 	local cr
 	index = not index
