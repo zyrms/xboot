@@ -1,23 +1,7 @@
-----[[
-local buildin_logger = require("org.xboot.buildin.logger")
-local buildin_event = require("org.xboot.buildin.event")
-local buildin_timecounter = require("org.xboot.buildin.timecounter")
-local buildin_cairo = require("org.xboot.buildin.cairo")
-
-local class = require("org.xboot.lang.class")
-local timer = require("org.xboot.timer.timer")
-local event = require("org.xboot.event.event")
-local event_dispatcher = require("org.xboot.event.event_dispatcher")
-local display_object = require("org.xboot.display.display_object")
-local display_image = require("org.xboot.display.display_image")
---]]
-----------------------------------------------------------------------------------
 local button = require("button")
-
 local scene1 = require("scene1")
 local scene2 = require("scene2")
 local scene_manager = require("scene_manager")
-
 require("easing")
 
 ----------------------------------------------------------------------------------
@@ -61,6 +45,10 @@ local cursor = display_image:new("/romdisk/samples/images/cursor.png", 0, 0)
 cursor:add_event_listener(event.MOUSE_DOWN, function(d, e) d:setxy(e.info.x, e.info.y) end, cursor)
 cursor:add_event_listener(event.MOUSE_MOVE, function(d, e) d:setxy(e.info.x, e.info.y) end, cursor)
 cursor:add_event_listener(event.MOUSE_UP, function(d, e) d:setxy(e.info.x, e.info.y) end, cursor)
+cursor:add_event_listener(event.TOUCHES_BEGIN, function(d, e) d:setxy(e.info.x, e.info.y) end, cursor)
+cursor:add_event_listener(event.TOUCHES_MOVE, function(d, e) d:setxy(e.info.x, e.info.y) end, cursor)
+cursor:add_event_listener(event.TOUCHES_END, function(d, e) d:setxy(e.info.x, e.info.y) end, cursor)
+cursor:add_event_listener(event.TOUCHES_CANCEL, function(d, e) d:setxy(e.info.x, e.info.y) end, cursor)
 runtime:add_child(cursor)
 
 ------------------- main --------------------------------

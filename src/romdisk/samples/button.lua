@@ -1,7 +1,3 @@
-local class = require("org.xboot.lang.class")
-local event = require("org.xboot.event.event")
-local display_object = require("org.xboot.display.display_object")
-
 local M = class(display_object)
 
 function M:init(normal, active)
@@ -53,19 +49,28 @@ function M:on_mouse_up(e)
 end
 
 function M:on_touches_begin(e)
-	if self.focus then
+	if self:hit_test_point(e.info.x, e.info.y) then
+		self.focus = true
+		self:update_visual_state(self.focus)
 		e:stop_propagation()
 	end
 end
 
 function M:on_touches_move(e)
 	if self.focus then
+		if not self:hit_test_point(e.info.x, e.info.y) then	
+			self.focus = false
+			self:update_visual_state(self.focus)
+		end
 		e:stop_propagation()
 	end
 end
 
 function M:on_touches_end(e)
 	if self.focus then
+		self.focus = false
+		self:update_visual_state(self.focus)
+		self:dispatch_event(event:new("click"))
 		e:stop_propagation()
 	end
 end
@@ -73,7 +78,7 @@ end
 function M:on_touches_cancel(e)
 	if self.focus then
 		self.focus = false;
-		self:update_visual_state(false)
+		self:update_visual_state(self.focus)
 		e:stop_propagation()
 	end
 end

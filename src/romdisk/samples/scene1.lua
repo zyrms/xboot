@@ -1,15 +1,3 @@
-local buildin_logger = require("org.xboot.buildin.logger")
-local buildin_event = require("org.xboot.buildin.event")
-local buildin_timecounter = require("org.xboot.buildin.timecounter")
-local buildin_cairo = require("org.xboot.buildin.cairo")
-
-local class = require("org.xboot.lang.class")
-local timer = require("org.xboot.timer.timer")
-local event = require("org.xboot.event.event")
-local event_dispatcher = require("org.xboot.event.event_dispatcher")
-local display_object = require("org.xboot.display.display_object")
-local display_image = require("org.xboot.display.display_image")
-
 local M = class(display_object)
 
 function M:init()
@@ -24,6 +12,11 @@ function M:init()
 		img:add_event_listener(event.MOUSE_DOWN, self.on_mouse_down, img)
 		img:add_event_listener(event.MOUSE_MOVE, self.on_mouse_move, img)
 		img:add_event_listener(event.MOUSE_UP, self.on_mouse_up, img)
+	
+		img:add_event_listener(event.TOUCHES_BEGIN, self.on_touches_begin, img)
+		img:add_event_listener(event.TOUCHES_MOVE, self.on_touches_move, img)
+		img:add_event_listener(event.TOUCHES_END, self.on_touches_end, img)
+		img:add_event_listener(event.TOUCHES_CANCEL, self.on_touches_cancel, img)
 	
 		self:add_child(img)
 	end
@@ -58,6 +51,43 @@ function M:on_mouse_move(e)
 end
 
 function M:on_mouse_up(e)
+	if self.isfocus then
+		self.isfocus = false
+		e:stop_propagation()
+	end
+end
+
+function M:on_touches_begin(e)
+	if self:hit_test_point(e.info.x, e.info.y) then
+		self.isfocus = true
+		self:tofront()
+		
+		self.x0 = e.info.x
+		self.y0 = e.info.y
+		e:stop_propagation()
+	end
+end
+
+function M:on_touches_move(e)
+	if self.isfocus then
+		local dx = e.info.x - self.x0
+		local dy = e.info.y - self.y0
+		
+		self:translate(dx, dy)
+		self.x0 = e.info.x
+		self.y0 = e.info.y
+		e:stop_propagation()
+	end
+end
+
+function M:on_touches_end(e)
+	if self.isfocus then
+		self.isfocus = false
+		e:stop_propagation()
+	end
+end
+
+function M:on_touches_cancel(e)
 	if self.isfocus then
 		self.isfocus = false
 		e:stop_propagation()

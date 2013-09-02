@@ -25,7 +25,9 @@
 #include <xboot.h>
 #include <realview-mouse.h>
 
-struct realview_mouse_platform_data_t {
+//#define MOUSE_TO_TOUCHES_EVENT
+
+struct realview_mouse_private_data_t {
 	u8_t packet[4];
 	u8_t index;
 	u8_t btn_old;
@@ -71,7 +73,7 @@ static bool_t kmi_read(struct realview_mouse_data_t * dat, u8_t * value)
 static void mouse_interrupt(void * data)
 {
 	struct input_t * input = (struct input_t *)data;
-	struct realview_mouse_platform_data_t * dat = (struct realview_mouse_platform_data_t *)input->priv;
+	struct realview_mouse_private_data_t * dat = (struct realview_mouse_private_data_t *)input->priv;
 	struct realview_mouse_data_t * rdat = (struct realview_mouse_data_t *)dat->rdat;
 	s32_t x, y, relx, rely, delta;
 	u32_t btndown, btnup, btn;
@@ -124,6 +126,16 @@ static void mouse_interrupt(void * data)
 			x = dat->xpos;
 			y = dat->ypos;
 
+#ifdef MOUSE_TO_TOUCHES_EVENT
+			if((btn & MOUSE_BUTTON_LEFT) && ((relx != 0) || (rely != 0)))
+				push_event_touches_move(input, x, y, 0);
+
+			if(btndown & MOUSE_BUTTON_LEFT)
+				push_event_touches_begin(input, x, y, 0);
+
+			if(btnup & MOUSE_BUTTON_LEFT)
+				push_event_touches_end(input, x, y, 0);
+#else
 			if((relx != 0) || (rely != 0))
 				push_event_mouse_move(input, x, y);
 
@@ -135,6 +147,7 @@ static void mouse_interrupt(void * data)
 
 			if(btnup)
 				push_event_mouse_button_up(input, x, y, btnup);
+#endif
 		}
 
 		status = readb(rdat->regbase + REALVIEW_MOUSE_OFFSET_IIR);
@@ -143,7 +156,7 @@ static void mouse_interrupt(void * data)
 
 static void input_init(struct input_t * input)
 {
-	struct realview_mouse_platform_data_t * dat = (struct realview_mouse_platform_data_t *)input->priv;
+	struct realview_mouse_private_data_t * dat = (struct realview_mouse_private_data_t *)input->priv;
 	struct realview_mouse_data_t * rdat = (struct realview_mouse_data_t *)dat->rdat;
 	u32_t divisor;
 	u64_t kclk;
@@ -212,7 +225,7 @@ static void input_init(struct input_t * input)
 
 static void input_exit(struct input_t * input)
 {
-	struct realview_mouse_platform_data_t * dat = (struct realview_mouse_platform_data_t *)input->priv;
+	struct realview_mouse_private_data_t * dat = (struct realview_mouse_private_data_t *)input->priv;
 	struct realview_mouse_data_t * rdat = (struct realview_mouse_data_t *)dat->rdat;
 
 	if(!free_irq("KMI1"))
@@ -236,7 +249,7 @@ static void input_resume(struct input_t * input)
 static bool_t realview_register_mouse(struct resource_t * res)
 {
 	struct realview_mouse_data_t * rdat = (struct realview_mouse_data_t *)res->data;
-	struct realview_mouse_platform_data_t * dat;
+	struct realview_mouse_private_data_t * dat;
 	struct input_t * input;
 	char name[64];
 
@@ -246,7 +259,7 @@ static bool_t realview_register_mouse(struct resource_t * res)
 		return FALSE;
 	}
 
-	dat = malloc(sizeof(struct realview_mouse_platform_data_t));
+	dat = malloc(sizeof(struct realview_mouse_private_data_t));
 	if(!dat)
 		return FALSE;
 
@@ -277,12 +290,13 @@ static bool_t realview_register_mouse(struct resource_t * res)
 	input->exit = input_exit;
 	input->ioctl = input_ioctl;
 	input->suspend = input_suspend,
-	input->resume	= input_resume,
+	input->resume = input_resume,
 	input->priv = dat;
 
 	if(register_input(input))
 		return TRUE;
 
+	free(input->priv);
 	free(input->name);
 	free(input);
 	return FALSE;
@@ -310,12 +324,12 @@ static bool_t realview_unregister_mouse(struct resource_t * res)
 
 static __init void realview_mouse_device_init(void)
 {
-	resource_callback_with_name("mouse-pl050", realview_register_mouse);
+	resource_for_each_with_name("mouse-pl050", realview_register_mouse);
 }
 
 static __exit void realview_mouse_device_exit(void)
 {
-	resource_callback_with_name("mouse-pl050", realview_unregister_mouse);
+	resource_for_each_with_name("mouse-pl050", realview_unregister_mouse);
 }
 
 device_initcall(realview_mouse_device_init);

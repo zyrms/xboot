@@ -23,14 +23,14 @@
 #include <xboot.h>
 #include <led/led-simple.h>
 
-struct led_simple_platform_data_t {
+struct led_simple_private_data_t {
 	u32_t color;
 	struct led_simple_data_t * rdat;
 };
 
 static void led_simple_init(struct led_t * led)
 {
-	struct led_simple_platform_data_t * dat = (struct led_simple_platform_data_t *)led->priv;
+	struct led_simple_private_data_t * dat = (struct led_simple_private_data_t *)led->priv;
 	struct led_simple_data_t * rdat = (struct led_simple_data_t *)dat->rdat;
 
 	if(rdat->init)
@@ -39,7 +39,7 @@ static void led_simple_init(struct led_t * led)
 
 static void led_simple_exit(struct led_t * led)
 {
-	struct led_simple_platform_data_t * dat = (struct led_simple_platform_data_t *)led->priv;
+	struct led_simple_private_data_t * dat = (struct led_simple_private_data_t *)led->priv;
 	struct led_simple_data_t * rdat = (struct led_simple_data_t *)dat->rdat;
 
 	dat->color = 0;
@@ -49,7 +49,7 @@ static void led_simple_exit(struct led_t * led)
 
 static void led_simple_set(struct led_t * led, u32_t color)
 {
-	struct led_simple_platform_data_t * dat = (struct led_simple_platform_data_t *)led->priv;
+	struct led_simple_private_data_t * dat = (struct led_simple_private_data_t *)led->priv;
 	struct led_simple_data_t * rdat = (struct led_simple_data_t *)dat->rdat;
 
 	dat->color = color;
@@ -59,7 +59,7 @@ static void led_simple_set(struct led_t * led, u32_t color)
 
 static u32_t led_simple_get(struct led_t * led)
 {
-	struct led_simple_platform_data_t * dat = (struct led_simple_platform_data_t *)led->priv;
+	struct led_simple_private_data_t * dat = (struct led_simple_private_data_t *)led->priv;
 
 	return dat->color;
 }
@@ -75,11 +75,11 @@ static void led_simple_resume(struct led_t * led)
 static bool_t led_simple_register_led(struct resource_t * res)
 {
 	struct led_simple_data_t * rdat = (struct led_simple_data_t *)res->data;
-	struct led_simple_platform_data_t * dat;
+	struct led_simple_private_data_t * dat;
 	struct led_t * led;
 	char name[64];
 
-	dat = malloc(sizeof(struct led_simple_platform_data_t));
+	dat = malloc(sizeof(struct led_simple_private_data_t));
 	if(!dat)
 		return FALSE;
 
@@ -107,6 +107,7 @@ static bool_t led_simple_register_led(struct resource_t * res)
 	if(register_led(led))
 		return TRUE;
 
+	free(led->priv);
 	free(led->name);
 	free(led);
 	return FALSE;
@@ -134,12 +135,12 @@ static bool_t led_simple_unregister_led(struct resource_t * res)
 
 static __init void led_simple_device_init(void)
 {
-	resource_callback_with_name("led-simple", led_simple_register_led);
+	resource_for_each_with_name("led-simple", led_simple_register_led);
 }
 
 static __exit void led_simple_device_exit(void)
 {
-	resource_callback_with_name("led-simple", led_simple_unregister_led);
+	resource_for_each_with_name("led-simple", led_simple_unregister_led);
 }
 
 device_initcall(led_simple_device_init);

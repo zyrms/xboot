@@ -1,6 +1,3 @@
-local class = require("org.xboot.lang.class")
-local event = require("org.xboot.event.event")
-
 ---
 -- All classes that dispatch events inherit from 'event_dispatcher'. The target of
 -- an event is a listener function and an optional data value.
@@ -28,15 +25,15 @@ end
 -- @return A value of 'true' if a listener of the specified type is registered; 'false' otherwise.
 function M:has_event_listener(type, listener, data)
 	local els = self.event_listeners_map[type]
-	
+
 	if not els or #els == 0 then
 		return false
 	end
-    
+
 	if listener == nil and data == nil then
 		return true
-    end
-    
+	end
+
 	for i, v in ipairs(els) do
 		if v.listener == listener and v.data == data then
 			return true
@@ -84,8 +81,12 @@ end
 -- @param data The data parameter that is used while registering the event.
 -- @return A value of 'true' or 'false'.
 function M:remove_event_listener(type, listener, data)
-	local els = self.event_listeners_map[type] or {}
-    
+	local els = self.event_listeners_map[type]
+
+	if not els or #els == 0 then
+		return false
+	end
+
 	for i, v in ipairs(els) do
 		if v.type == type and v.listener == listener and v.data == data then
 			table.remove(els, i)
@@ -107,7 +108,11 @@ function M:dispatch_event(event)
 		return
 	end
 
-	local els = self.event_listeners_map[event.type] or {}
+	local els = self.event_listeners_map[event.type]
+
+	if not els or #els == 0 then
+		return
+	end
 
 	for i, v in ipairs(els) do
 		if v.type == event.type then

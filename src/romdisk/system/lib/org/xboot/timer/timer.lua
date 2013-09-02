@@ -1,5 +1,3 @@
-local class = require("org.xboot.lang.class")
-
 ---
 -- The 'timer' class is used to execute a code at specified intervals.
 -- 
@@ -25,7 +23,7 @@ function M:init(delay, iteration, listener, data)
 	self.time = 0
 	self.count = 0
 	self.running = true
-	
+
 	table.insert(timer_list, self)
 end
 
@@ -49,7 +47,7 @@ function M:resume()
 end
 
 ---
--- Pauses the timer that was resumed.
+-- Pauses the timer that was running.
 --
 -- @function [parent=#timer] pause
 -- @param self
@@ -74,16 +72,16 @@ function M:cancel()
 end
 
 ---
--- Schedule all timers in list.
+-- Schedule all timers according to time interval.
 -- 
 -- @function [parent=#timer] schedule
 -- @param self
--- @param delta (number) The time interval in seconds.
-function M:schedule(delta)
+-- @param dt (number) The time delta in seconds.
+function M:schedule(dt)
 	for i, v in ipairs(timer_list) do
 		if v.running then
-			v.time = v.time + delta
-			
+			v.time = v.time + dt
+
 			if v.time > v.delay then
 				v.count = v.count + 1
 				v.listener(v, {time = v.time, count = v.count, data = v.data})
