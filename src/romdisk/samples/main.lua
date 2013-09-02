@@ -36,7 +36,7 @@ local normal = display_image:new("/romdisk/samples/images/button_normal.png")
 local active = display_image:new("/romdisk/samples/images/button_active.png")
 local btn = button:new(normal, active)
 btn:add_event_listener("click", function(d, e)
-	sm:changeScene(nextScene(), 1, scene_manager.moveFromLeft, easing.outBounce) 
+	sm:changeScene(nextScene(), 1, scene_manager.overFromLeft, easing.outBounce) 
 end, btn)
 btn:setxy(40, 200)
 runtime:add_child(btn)
@@ -59,9 +59,11 @@ local cr1 = buildin_cairo.create(cs1)
 local cr2 = buildin_cairo.create(cs2)
 local index = false;
 
+--[[
 timer:new(5, 0, function(t, e)
 	sm:changeScene(nextScene(), 1, scene_manager.moveFromLeft, easing.outBounce) 
 end)
+]]
 
 timer:new(1 / 60, 0, function(t, e)
 	local cr
