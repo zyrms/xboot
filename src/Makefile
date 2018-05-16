@@ -122,6 +122,7 @@ SRCDIRS		+=	arch/$(ARCH)/lib/cpu						\
 				driver/console								\
 				driver/dac									\
 				driver/dma									\
+				driver/ethernet								\
 				driver/framebuffer							\
 				driver/gmeter								\
 				driver/gpio									\
