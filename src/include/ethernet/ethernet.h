@@ -10,24 +10,28 @@ extern "C" {
 struct ethernet_t
 {
 	char * name;
-	char hwaddr[6];
 
-	int (*tx)(struct ethernet_t * eth);
-	int (*rx)(struct ethernet_t * eth);
+	void (*open)(struct ethernet_t * eth);
+	void (*close)(struct ethernet_t * eth);
+	int (*send)(struct ethernet_t * eth, u8_t * buf, int len);
+	int (*recv)(struct ethernet_t * eth, u8_t * buf, int len);
+	void (*getaddr)(struct ethernet_t * eth, u8_t * addr);
+	void (*setaddr)(struct ethernet_t * eth, u8_t * addr);
 	void * priv;
 };
-
-static inline void ethernet_fill_hwaddr(struct ethernet_t * eth, const char * s)
-{
-	if(!s)
-		s = "00:04:a3:11:22:33";
-	sscanf(s, "%02x:%02x:%02x:%02x:%02x:%02x", &eth->hwaddr[0], &eth->hwaddr[1], &eth->hwaddr[2], &eth->hwaddr[3], &eth->hwaddr[4], &eth->hwaddr[5]);
-}
 
 struct ethernet_t * search_ethernet(const char * name);
 struct ethernet_t * search_first_ethernet(void);
 bool_t register_ethernet(struct device_t ** device, struct ethernet_t * eth);
 bool_t unregister_ethernet(struct ethernet_t * eth);
+
+void ethernet_open(struct ethernet_t * eth);
+void ethernet_close(struct ethernet_t * eth);
+int ethernet_send(struct ethernet_t * eth, u8_t * buf, int len);
+int ethernet_recv(struct ethernet_t * eth, u8_t * buf, int len);
+void ethernet_getaddr(struct ethernet_t * eth, u8_t * addr);
+void ethernet_setaddr(struct ethernet_t * eth, u8_t * addr);
+void ethernet_genaddr(u8_t * addr, const char * s);
 
 #ifdef __cplusplus
 }

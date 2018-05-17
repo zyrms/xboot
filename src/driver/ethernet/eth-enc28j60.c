@@ -32,6 +32,7 @@ struct eth_enc28j60_pdata_t {
 	int irq;
 	int rst;
 	int rstcfg;
+	u8_t addr[6];
 };
 
 static struct device_t * eth_enc28j60_probe(struct driver_t * drv, struct dtnode_t * n)
@@ -66,10 +67,10 @@ static struct device_t * eth_enc28j60_probe(struct driver_t * drv, struct dtnode
 	pdat->irq = irq;
 	pdat->rst = dt_read_int(n, "reset-gpio", -1);
 	pdat->rstcfg = dt_read_int(n, "reset-gpio-config", -1);
+	ethernet_genaddr(pdat->addr, dt_read_string(n, "hardware-address", NULL));
 
 	eth->name = alloc_device_name(dt_read_name(n), -1);
 	eth->priv = pdat;
-	ethernet_fill_hwaddr(eth, dt_read_string(n, "hardware-address", NULL));
 
 	if(pdat->rst >= 0)
 	{

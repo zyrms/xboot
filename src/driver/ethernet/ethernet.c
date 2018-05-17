@@ -23,12 +23,15 @@
  */
 
 #include <xboot.h>
+#include <sha1.h>
 #include <ethernet/ethernet.h>
 
 static ssize_t ethernet_read_hwaddr(struct kobj_t * kobj, void * buf, size_t size)
 {
 	struct ethernet_t * eth = (struct ethernet_t *)kobj->priv;
-	return sprintf(buf, "%02x:%02x:%02x:%02x:%02x:%02x", eth->hwaddr[0],eth->hwaddr[1], eth->hwaddr[2], eth->hwaddr[3], eth->hwaddr[4], eth->hwaddr[5]);
+	u8_t addr[6];
+	ethernet_getaddr(eth, addr);
+	return sprintf(buf, "%02x:%02x:%02x:%02x:%02x:%02x", addr[0],addr[1], addr[2], addr[3], addr[4], addr[5]);
 }
 
 struct ethernet_t * search_ethernet(const char * name)
@@ -100,4 +103,65 @@ bool_t unregister_ethernet(struct ethernet_t * eth)
 	free(dev);
 
 	return TRUE;
+}
+
+void ethernet_open(struct ethernet_t * eth)
+{
+	if(eth && eth->open)
+		eth->open(eth);
+}
+
+void ethernet_close(struct ethernet_t * eth)
+{
+	if(eth && eth->close)
+		eth->close(eth);
+}
+
+int ethernet_send(struct ethernet_t * eth, u8_t * buf, int len)
+{
+	if(eth && eth->send)
+		return eth->send(eth, buf, len);
+	return 0;
+}
+
+int ethernet_recv(struct ethernet_t * eth, u8_t * buf, int len)
+{
+	if(eth && eth->recv)
+		return eth->recv(eth, buf, len);
+	return 0;
+}
+
+void ethernet_getaddr(struct ethernet_t * eth, u8_t * addr)
+{
+	if(eth && eth->getaddr)
+		eth->getaddr(eth, addr);
+}
+
+void ethernet_setaddr(struct ethernet_t * eth, u8_t * addr)
+{
+	if(eth && eth->setaddr)
+		eth->setaddr(eth, addr);
+}
+
+void ethernet_genaddr(u8_t * addr, const char * s)
+{
+	if(addr)
+	{
+		if(s)
+		{
+			sscanf(s, "%02x:%02x:%02x:%02x:%02x:%02x", &addr[0], &addr[1], &addr[2], &addr[3], &addr[4], &addr[5]);
+		}
+		else
+		{
+			const char * id = machine_uniqueid();
+			struct sha1_ctx_t ctx;
+			sha1_init(&ctx);
+			sha1_update(&ctx, "ethernet", 8);
+			sha1_update(&ctx, id, strlen(id));
+			memcpy(addr, sha1_final(&ctx), 6);
+			addr[0] = 0x00;
+			addr[1] = 0x01;
+			addr[2] = 0xa3;
+		}
+	}
 }
