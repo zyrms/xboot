@@ -1,5 +1,5 @@
 /*
- * realview-pb-a8.c
+ * realview-pbx-a9.c
  *
  * Copyright(c) 2007-2018 Jianjun Jiang <8192542@qq.com>
  * Official site: http://xboot.org
@@ -41,10 +41,10 @@ static int mach_detect(struct machine_t * mach)
 
 static void mach_memmap(struct machine_t * mach)
 {
-	machine_mmap(mach, "rom", 0x70000000, 0x70000000, SZ_32M, MAP_TYPE_CB);
-	machine_mmap(mach, "ram", 0x72000000, 0x72000000, SZ_32M, MAP_TYPE_CB);
-	machine_mmap(mach, "dma", 0x74000000, 0x74000000, SZ_64M, MAP_TYPE_NCNB);
-	machine_mmap(mach, "heap", 0x78000000, 0x78000000, SZ_128M, MAP_TYPE_CB);
+	machine_mmap(mach, "rom", 0x00000000, 0x00000000, SZ_32M, MAP_TYPE_CB);
+	machine_mmap(mach, "ram", 0x02000000, 0x02000000, SZ_32M, MAP_TYPE_CB);
+	machine_mmap(mach, "dma", 0x04000000, 0x04000000, SZ_64M, MAP_TYPE_NCNB);
+	machine_mmap(mach, "heap", 0x08000000, 0x08000000, SZ_128M, MAP_TYPE_CB);
 	mmu_setup(mach);
 }
 
@@ -115,9 +115,9 @@ static int mach_keygen(struct machine_t * mach, const char * msg, void * key)
 	return 0;
 }
 
-static struct machine_t realview_pb_a8 = {
-	.name 		= "realview-pb-a8",
-	.desc 		= "ARM RealView Platform Baseboard For Cortex-A8",
+static struct machine_t realview_pbx_a9 = {
+	.name 		= "realview-pbx-a9",
+	.desc 		= "ARM RealView Platform Baseboard Explore for Cortex-A9",
 	.detect 	= mach_detect,
 	.memmap		= mach_memmap,
 	.smpinit	= mach_smpinit,
@@ -131,15 +131,15 @@ static struct machine_t realview_pb_a8 = {
 	.keygen		= mach_keygen,
 };
 
-static __init void realview_pb_a8_machine_init(void)
+static __init void realview_pbx_a9_machine_init(void)
 {
-	register_machine(&realview_pb_a8);
+	register_machine(&realview_pbx_a9);
 }
 
-static __exit void realview_pb_a8_machine_exit(void)
+static __exit void realview_pbx_a9_machine_exit(void)
 {
-	unregister_machine(&realview_pb_a8);
+	unregister_machine(&realview_pbx_a9);
 }
 
-machine_initcall(realview_pb_a8_machine_init);
-machine_exitcall(realview_pb_a8_machine_exit);
+machine_initcall(realview_pbx_a9_machine_init);
+machine_exitcall(realview_pbx_a9_machine_exit);

@@ -10,10 +10,10 @@ STACK_SRV_SIZE = 0x100000;
 
 MEMORY
 {
-	rom  : org = 0x70000000, len = 32M
-	ram  : org = 0x72000000, len = 32M
-	dma  : org = 0x74000000, len = 64M
-	heap : org = 0x78000000, len = 128M
+	rom  : org = 0x00000000, len = 32M
+	ram  : org = 0x02000000, len = 32M
+	dma  : org = 0x04000000, len = 64M
+	heap : org = 0x08000000, len = 128M
 }
 
 SECTIONS
