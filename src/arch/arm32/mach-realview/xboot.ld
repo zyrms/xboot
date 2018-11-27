@@ -23,6 +23,9 @@ SECTIONS
 		PROVIDE(__image_start = .);
 		PROVIDE(__text_start = .);
 		.obj/arch/arm32/mach-realview/start.o (.text*)
+		.obj/arch/arm32/mach-realview/sys-smp.o (.text*)
+		.obj/arch/arm32/lib/memcpy.o (.text*)
+		.obj/arch/arm32/lib/memset.o (.text*)
 		*(.text*)
 		*(.init.text)
 		*(.exit.text)

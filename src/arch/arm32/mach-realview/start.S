@@ -126,6 +126,14 @@ reset:
 	mov r0, #0x40000000
 	fmxr fpexc, r0
 
+	/* Check processor id, and startup slave cores */
+	mrc p15, 0, r0, c0, c0, 5
+	ands r0, #3
+	beq 2f
+1:	bl sys_smp_secondary_startup
+	b 1b
+2:	nop
+
 	/* Initialize stacks */
 	mrs r0, cpsr
 	bic r0, r0, #0x1f
